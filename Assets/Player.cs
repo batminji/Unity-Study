@@ -2,12 +2,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Rigidbody2D rb;
-    
-    // Update is called once per frame
-    void Update()
-    {
-        rb.linearVelocity = new Vector2(Input.GetAxis("Horizontal"), rb.linearVelocityY);
+    public string playerName = "Minji";
+    public int age = 24;
+    public float moveSpeed = 2.5f;
+    public bool gameOver = false;
 
+    public Rigidbody2D rb;
+
+    private void Start()
+    {
+        
     }
 }
