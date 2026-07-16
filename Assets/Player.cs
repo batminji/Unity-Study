@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 
     private float xInput;
     [SerializeField] private float moveSpeed = 3.5f;     // SerializeField : private 필드에 인스펙터에서 접근 가능하도록 허용
+    [SerializeField] private float jumpForce = 8.0f;
 
     private void Awake()
     {
@@ -17,6 +18,21 @@ public class Player : MonoBehaviour
         // xInput = Input.GetAxis("Horizontal");        // -1 ~ 1 사이의 값 반환
         xInput = Input.GetAxisRaw("Horizontal");        // -1 또는 1로만 반환
 
-        rb.linearVelocity = new Vector2(xInput * moveSpeed, rb.linearVelocity.y);
+        HandleMovement();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
+    }
+
+    private void HandleMovement()
+    {
+        rb.linearVelocity = new Vector2(xInput * moveSpeed, rb.linearVelocityY);
+    }
+
+    private void Jump()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
     }
 }
