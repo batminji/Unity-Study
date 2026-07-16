@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed = 3.5f;     // SerializeField : private 필드에 인스펙터에서 접근 가능하도록 허용
     [SerializeField] private float jumpForce = 8.0f;
 
+    [SerializeField] private bool facingRight = true;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -21,6 +23,7 @@ public class Player : MonoBehaviour
         HandleInput();
         HandleMovement();
         HandleAnimations();
+        HandleFlip();
     }
 
     private void HandleAnimations()
@@ -48,5 +51,22 @@ public class Player : MonoBehaviour
     private void Jump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+    }
+
+    private void HandleFlip()
+    {
+        if(rb.linearVelocityX > 0 && facingRight == false)
+        {
+            Flip();
+        }
+        else if(rb.linearVelocityX < 0 && facingRight == true)
+        {
+            Flip();
+        }
+    }
+    private void Flip()
+    {
+        transform.Rotate(0, 180, 0);
+        facingRight = !facingRight;
     }
 }
