@@ -35,9 +35,9 @@ public class Player : MonoBehaviour
 
     private void HandleAnimations()
     {
-        bool isMoving = rb.linearVelocityX != 0;        // linearVelocityX : Rigidbody2D의 수평 속도
-
-        anim.SetBool("isMoving", isMoving);             // SetBool : Animator Controller의 파라미터를 설정
+        anim.SetBool("isGrounded", isGrounded);                     // SetBool : Animator Controller의 파라미터를 설정
+        anim.SetFloat("yVelocity", rb.linearVelocityY);             // SetFloat : Animator Controller의 파라미터를 설정
+        anim.SetFloat("xVelocity", rb.linearVelocityX);
     }
 
     private void HandleInput()
