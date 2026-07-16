@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed = 3.5f;     // SerializeField : private 필드에 인스펙터에서 접근 가능하도록 허용
     [SerializeField] private float jumpForce = 8.0f;
     private bool facingRight = true;
+    private bool canMove = true;
+    private bool canJump = true;
 
     [Header("Collision Settings")]
     [SerializeField] private float groundCheckDistance = 0.1f;
@@ -33,6 +35,12 @@ public class Player : MonoBehaviour
         HandleFlip();
     }
 
+    public void EnableMovementAndJump(bool enable)
+    {
+        canMove = enable;
+        canJump = enable;
+    }
+
     private void HandleAnimations()
     {
         anim.SetBool("isGrounded", isGrounded);                     // SetBool : Animator Controller의 파라미터를 설정
@@ -46,20 +54,39 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Jump();
+            TryToJump();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            TryToAttack();
         }
     }
 
-    private void HandleMovement()
-    {
-        rb.linearVelocity = new Vector2(xInput * moveSpeed, rb.linearVelocityY);
-    }
-
-    private void Jump()
+    private void TryToAttack()
     {
         if(isGrounded)
         {
+            anim.SetTrigger("attack");
+        }
+    }
+
+    private void TryToJump()
+    {
+        if(isGrounded && canJump)
+        {
             rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+        }
+    }
+    private void HandleMovement()
+    {
+        if (canMove)
+        {
+            rb.linearVelocity = new Vector2(xInput * moveSpeed, rb.linearVelocityY);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
         }
     }
 
