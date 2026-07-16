@@ -15,10 +15,13 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        // xInput = Input.GetAxis("Horizontal");        // -1 ~ 1 사이의 값 반환
-        xInput = Input.GetAxisRaw("Horizontal");        // -1 또는 1로만 반환
-
+        HandleInput();
         HandleMovement();
+    }
+
+    private void HandleInput()
+    {
+        xInput = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
