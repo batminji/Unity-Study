@@ -6,7 +6,12 @@ public class Player : MonoBehaviour
     private Animator anim;
     private Rigidbody2D rb;
 
-    [Header("Player Movement Settings")]
+    [Header("Player Settings")]
+    [SerializeField] private float attackRadius;
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private LayerMask enemyLayer;
+
+    [Header("Movement Settings")]
     private float xInput;
     [SerializeField] private float moveSpeed = 3.5f;     // SerializeField : private 필드에 인스펙터에서 접근 가능하도록 허용
     [SerializeField] private float jumpForce = 8.0f;
@@ -33,6 +38,16 @@ public class Player : MonoBehaviour
         HandleMovement();
         HandleAnimations();
         HandleFlip();
+    }
+
+    public void DamageEnemies()
+    {
+        Collider2D[] enemyColliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);     // OverlapCircleAll : 지정한 위치와 반지름 내에 있는 모든 Collider2D를 반환
+
+        foreach (Collider2D enemy in enemyColliders)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage();
+        }
     }
 
     public void EnableMovementAndJump(bool enable)
@@ -116,6 +131,7 @@ public class Player : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -groundCheckDistance, 0));    
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -groundCheckDistance, 0));
+        Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
     }
 }
